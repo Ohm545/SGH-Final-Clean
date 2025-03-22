@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.set("view engine", "ejs");
+
 // const upload = multer({dest:'uploads/'});
 const pool = new Pool({
         user: process.env.DB_USER,
@@ -36,7 +37,7 @@ console.log("DB_USER:", process.env.DB_USER);
 console.log("DB_PASS:", process.env.DB_PASS);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "lagunagepage.html"));
 });
