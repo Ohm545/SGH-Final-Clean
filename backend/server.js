@@ -4,7 +4,7 @@ import otpGenerator from "otp-generator";
 import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
 import session from "express-session";
-import "dotenv/config";
+import 'dotenv/config';
 import fs from 'fs';
 import pkg from "pg";
 import twilio from "twilio";
@@ -20,17 +20,20 @@ app.use(cors());
 app.set("view engine", "ejs");
 // const upload = multer({dest:'uploads/'});
 const pool = new Pool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PATEL,
-    database: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASS,
+        port: process.env.DB_PORT
 });
-app.use(session({
-    secret: process.env.OHMS,
-    resave: false,
-    saveUninitialized: true
-}));
+// app.use(session({
+//     secret: process.env.SECERT_KEY,
+//     resave: false,
+//     saveUninitialized: true
+// }));
+// dotenv.config();
+console.log("DB_USER:", process.env.DB_USER);  
+console.log("DB_PASS:", process.env.DB_PASS);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
