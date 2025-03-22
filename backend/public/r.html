@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declined Complaints</title>
+    <style>
+        /* Background Video Styling */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better visibility */
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .complaintcard {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .complaint-item {
+            background: #ffdddd;
+            padding: 15px;
+            border-left: 5px solid red;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Records</h2>
+        <div id="complaintcard" class="complaintcard"></div>
+    </div>
+
+    <script>
+        async function fetchDeclinedComplaints() {
+            try {
+                const response = await fetch("http://localhost:5000/r", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch complaints');
+
+                const complaints = await response.json();
+                const complaintCard = document.getElementById('complaintcard');
+                complaintCard.innerHTML = ''; 
+
+                if (complaints.length === 0) {
+                    complaintCard.innerHTML = "<p>No declined complaints found.</p>";
+                    return;
+                }
+
+                complaints.forEach(complaint => {
+                    const complaintItem = document.createElement('div');
+                    complaintItem.classList.add('complaint-item');
+                    complaintItem.innerHTML = `
+                        <p><strong>Department:</strong>${complaint.department}<br>
+                        <strong>Problem:</strong>${complaint.complaintdesc}<br>
+                        <strong>Complaint:</strong>${complaint.complaint}<br>
+                        <strong>Taluka:</strong> ${complaint.taluka}<br>
+                        <strong>Contact:</strong> ${complaint.mobilenum}<br>
+                        <strong>Image_URL:</strong>${complaint.image_url}</p>`;
+                    complaintCard.appendChild(complaintItem);
+                });
+            } catch (error) {
+                console.error('Error fetching complaints:', error);
+            }
+        }
+
+        fetchDeclinedComplaints();
+    </script>
+</body>
+</html>

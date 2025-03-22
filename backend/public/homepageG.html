@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Express - Digital Grievance Redressal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+         body {
+            line-height: 1.6;
+            color: #2d3748;
+            overflow-x: hidden;
+            background: #edf4fb; /* New website background */
+        }
+
+
+        /* Navigation - Modified */
+        .navbar {
+            background:rgb(48, 104, 179);
+            padding: 0 1.5rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            z-index: 1001;
+        }
+
+        .logo-svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        /* Mobile Menu Styles */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .megaphone-logo {
+            fill: none;
+            stroke: #4fd1c5; /* Your brand teal color */
+        }
+
+        .megaphone-logo path:nth-child(3) { /* Document lines */
+            stroke: white !important;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 60px;
+                gap: 0;
+                flex-direction: column;
+                background: #1a365d;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .nav-links a {
+                padding: 1rem;
+                display: block;
+                width: 100%;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+
+        .nav-links li {
+            margin:0 1.5rem;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), /* Lighter overlay */
+                    url('https://cmogujarat.gov.in/sites/default/files/2024-11/cm-gujarat-swagat-session-oct-2024-grievances.JPG');
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white; /* Original text color restored */
+        padding-top: 72px; /* Push content below navbar */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+    }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Buttons */
+        .cta-buttons {
+            margin-top: 2rem;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            margin: 0 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .citizen-btn {
+            background: #2dccbc;
+            color: #1a365d;
+        }
+
+        .official-btn {
+            background: #edf4fb;
+            color: #1a365d;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a365d;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4fd1c5;
+            margin-bottom: 1rem;
+        }
+
+        /* Benefits Section */
+        .benefits-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .benefit-box {
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .benefit-box ul{
+            list-style-type: none;
+        }
+        .benefit-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            color: #1a365d;
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-section {
+            background: 
+                        url('https://img.freepik.com/premium-photo/light-blue-background-website-banner_1106493-233794.jpg');
+            background-size: cover;
+            background-position: center;
+            color: rgb(8, 55, 108);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(227, 234, 234, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Roadmap Section */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgb(48, 104, 179);
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-content > div {
+            display: flex;
+            flex-direction: column; /* Keeps text in a vertical stack */
+            align-items: center; /* Horizontal center */
+            justify-content: center; /* Vertical center */
+            /* text-align: center; Optional: centers text */
+            height: 100%; /* Ensures full height in the grid */
+        }
+        .footer-content ul{
+            list-style-type: none;
+            margin-left: -32px;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #4fd1c5;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #4fd1c5;
+        }
+
+        @media (max-width: 768px) {
+        .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 60px;
+                gap: 0;
+                flex-direction: column;
+                background: #1a365d;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+                height: auto; /* Changed from 100vh calculation */
+                max-height: 80vh; /* Prevent taking full screen height */
+                overflow-y: auto; /* Keep scroll if content exceeds */
+    }
+
+    .nav-links li {
+        margin: 0.5rem 0; /* Reduced margin */
+    }
+
+    .nav-links a {
+        padding: 0.75rem 1rem; /* Slightly reduced padding */
+    }
+        }
+    </style>
+</head>
+<body>
+    <!-- નેવિગેશન નવા લોગો સાથે -->
+    <nav class="navbar">
+        <a href="#" class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 64 64">
+                <g class="megaphone-logo">
+                    <!-- મેગાફોન બોડી (ટીલ) -->
+                    <path d="M52 28L32 8 12 28v24h40V28z" fill="#1a365d" stroke="#4fd1c5"/>
+                    <!-- સાઉન્ડ વેવ્સ (ટીલ) -->
+                    <path d="M52 36c4 0 8-4 8-8s-4-8-8-8M52 44c7 0 12-5 12-12s-5-12-12-12" stroke="#4fd1c5"/>
+                    <!-- ડોક્યુમેન્ટ લાઇન્સ (સફેદ) -->
+                    <path d="M16 36h12M16 42h12M16 48h12" stroke="#fff"/>
+                </g>
+            </svg>
+            <span class="logo-text">ફરિયાદ એક્સપ્રેસ</span>
+        </a>
+        
+        <button class="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="#features">વિશેષતાઓ</a></li>
+            <li><a href="#benefits">ફાયદાઓ</a></li>
+            <li><a href="#about">અમારા વિશે</a></li>
+            <li><a href="#roadmap">રોડમેપ</a></li>
+            <li><a href="contact.html">સંપર્ક કરો</a></li>
+            <li><a href="faq.html">વારંવાર પૂછાતા પ્રશ્નો</a></li>
+        </ul>
+    </nav>
+
+    <!-- હીરો સેક્શન -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>નાગરિકોને સશક્ત બનાવવા, શાસનને વધુ સારું બનાવવા</h1>
+            <p>સરકારી અધિકારીઓ સાથે સહજતાથી જોડાવો, ફરિયાદની સ્થિતિ ટ્રૅક કરો અને પારદર્શક સિસ્ટમમાં યોગદાન આપો</p>
+            <div class="cta-buttons">
+                <button class="cta-btn citizen-btn" onclick="location.href='citizenloginG.html'">નાગરિક પોર્ટલ</button>
+                <button class="cta-btn official-btn" onclick="location.href='officerlogin.html'">અધિકારી પોર્ટલ</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- વિશેષતાઓ -->
+    <section class="section" id="features">
+        <h2 class="section-title">મુખ્ય વિશેષતાઓ</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain feature-icon"></i>
+                <h3>AI-આધારિત વિશ્લેષણ</h3>
+                <p>સંબંધિત વિભાગોમાં આપમેળે ફરિયાદનું વર્ગીકરણ</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>OTP ચકાસણી</h3>
+                <p>બે-પગલાની પ્રમાણીકરણ સાથે સુરક્ષિત પ્રવેશ</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bell feature-icon"></i>
+                <h3>રીઅલ-ટાઇમ અપડેટ્સ</h3>
+                <p>દરેક ફરિયાદના તબક્કે તાત્કાલિક સૂચનાઓ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ફાયદાઓ -->
+    <section class="section" id="benefits">
+        <h2 class="section-title">ફાયદાઓ</h2>
+        <div class="benefits-container">
+            <div class="benefit-box">
+                <i class="fas fa-university benefit-icon"></i>
+                <h3>સરકાર માટે</h3>
+                <ul>
+                    <li>✓ વધુ સારી ઓપરેશનલ કાર્યક્ષમતા</li>
+                    <li>✓ ડેટા-આધારિત નિર્ણય લેવાની પ્રક્રિયા</li>
+                    <li>✓ સુધારેલ સ્રોતોનું વિતરણ</li>
+                    <li>✓ પારદર્શક જવાબદારી</li>
+                </ul>
+            </div>
+            <div class="benefit-box">
+                <i class="fas fa-users benefit-icon"></i>
+                <h3>નાગરિકો માટે</h3>
+                <ul>
+                    <li>✓ રીઅલ-ટાઇમ સ્થિતિ ટ્રૅકિંગ</li>
+                    <li>✓ સરળ ફરિયાદ નોંધણી</li>
+                    <li>✓ અપેક્ષિત સમાધાન સમયરેખા</li>
+                    <li>✓ પ્રતિસાદ પદ્ધતિ</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- અમારા વિશે -->
+    <section class="about-section" id="about">
+        <div class="about-content">
+            <h2>ફરિયાદ એક્સપ્રેસ વિશે</h2>
+            <p>ફરિયાદ એક્સપ્રેસ એ એક AI-આધારિત પ્લેટફોર્મ છે જે નાગરિકો અને સરકારી અધિકારીઓ વચ્ચેની ખાઈને પાટવાનું કામ કરે છે. અમે ફરિયાદ પ્રક્રિયાને સરળ બનાવીએ છીએ, ખાતરી કરીએ છીએ કે દરેક અવાજ સંબંધિત વિભાગ દ્વારા સાંભળી અને સંભાળી લેવામાં આવે. અમારું ધ્યેય પારદર્શકતા, જવાબદારી અને નાગરિકોને શાસનમાં સક્રિય રીતે ભાગ લેવા માટે સશક્ત બનાવવાનું છે.</p>
+        </div>
+    </section>
+
+    <!-- રોડમેપ -->
+    <section class="section" id="roadmap">
+        <h2 class="section-title">આગામી વિશેષતાઓ</h2>
+        <div class="roadmap-grid">
+            <div class="feature-card">
+                <i class="fas fa-lock feature-icon"></i>
+                <h3>અદ્યતન સુરક્ષા</h3>
+                <p>256-બિટ એન્ક્રિપ્શન અને HTTPS પ્રોટોકોલ</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-sync feature-icon"></i>
+                <h3>લાઇવ ઇન્ટિગ્રેશન</h3>
+                <p>ગુજરાત ભરમાં રીઅલ-ટાઇમ અપડેટ્સ</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <h3>AI એનાલિટિક્સ</h3>
+                <p>પરફોર્મન્સ રેન્કિંગ સિસ્ટમ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>અમારો સંપર્ક કરો</h3>
+                <p><a href="mailto:complaintexpress@gmail.com?subject=Feedback&body=Hello!">📧 complaintexpress@gmail.com</a></p>
+                <!-- <p>📞 +91-XXX-XXX-XXXX</p> -->
+                <p><a href="https://www.ddu.ac.in/">🎓 ધર્મસિંહ દેસાઈ યુનિવર્સિટી, ગુજરાત</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>ઝડપી લિંક્સ</h3>
+                <ul>
+                    <li><a href="#features">વિશેષતાઓ</a></li>
+                    <li><a href="faq.html">વારંવાર પૂછાતા પ્રશ્નો</a></li>
+                    <li><a href="contact.html">ટીમ</a></li>
+                </ul>
+            </div>
+            <!-- <div class="footer-section">
+                <h3>કાનૂની માહિતી</h3>
+                <ul>
+                    <li><a href="#">ગોપનીયતા નીતિ</a></li>
+                    <li><a href="#">સેવાના નિયમો</a></li>
+                </ul>
+            </div> -->
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Get the browser's language
+        var userLang = navigator.language || navigator.userLanguage;
+
+       
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Close menu after clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+
+
+     // Check the language and redirect
+        // if (userLang.startsWith('gu')) {
+        //     window.location.href = 'homepageG.html'; // Redirect to Gujarati version
+        // } else {
+        //     window.location.href = 'homepage.html'; // Default to English
+        // }
+    </script>
+</body>
+</html>

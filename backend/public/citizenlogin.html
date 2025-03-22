@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Portal Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #2c3e50, #34495e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            width: 100%;
+            background: #1c2833;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links button {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .nav-links .active {
+            background: #2980b9;
+            box-shadow: 0px 4px 8px rgba(41, 128, 185, 0.6);
+        }
+
+        .nav-links button:not(.active) {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .nav-links button:hover {
+            background: #2980b9;
+            border: none;
+        }
+
+        /* Login Form Styling */
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #1c638d;
+        }
+
+        .footer-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <button type="button" class="active">Login</button>
+            <form action="/citizensignup" method="POST">
+                <button type="submit">Sign Up</button>
+            </form>
+        </ul>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2>Government Portal Login</h2>
+        <form action="/omlogin" method="POST" id="loginForm">
+            <div class="form-group">
+                <label for="mobile">Phone Number:</label>
+                <input type="text" id="mobile" name="mobile" placeholder="Enter Your Mobile Number" required>
+            </div>
+            <div class="form-group">
+                <label for="pass">Password:</label>
+                <input type="text" id="pass" name="pass" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="footer-text">For authorized users only</p>
+    </div>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function() {
+            const mobile = document.getElementById("mobile").value;
+            sessionStorage.setItem("citizenMobile", mobile);
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Grievance Express Project Report</title>
+        <style>
+          body {
+            font-family: "Arial", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+            background-color: #f9f9f9;
+          }
+          .page {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1in;
+            margin-bottom: 0.5in;
+          }
+          h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 0;
+          }
+          h2 {
+            color: #2980b9;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+          }
+          h3 {
+            color: #3498db;
+          }
+          .title-page {
+            text-align: center;
+            height: 9in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          .title-page h1 {
+            font-size: 24pt;
+            margin-bottom: 50px;
+          }
+          .title-page p {
+            margin: 10px 0;
+            font-size: 14pt;
+          }
+          .team-info {
+            margin: 40px 0;
+          }
+          .team-info p {
+            margin: 5px 0;
+          }
+          .submission-info {
+            margin-top: 60px;
+          }
+          ul,
+          ol {
+            padding-left: 25px;
+          }
+          .editable {
+            border: 1px solid transparent;
+            padding: 5px;
+            min-height: 20px;
+          }
+          .editable:hover {
+            border: 1px dashed #ccc;
+            background-color: #f8f8f8;
+          }
+          .editable:focus {
+            border: 1px solid #3498db;
+            background-color: #f0f8ff;
+            outline: none;
+          }
+          .example {
+            background-color: #f0f8ff;
+            border-left: 3px solid #3498db;
+            padding: 10px;
+            margin: 10px 0;
+            font-style: italic;
+          }
+          .page-break {
+            page-break-before: always;
+          }
+          .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+          @media print {
+            body {
+              padding: 0;
+              background-color: white;
+            }
+            .page {
+              box-shadow: none;
+              padding: 0;
+              margin: 0;
+              page-break-after: always;
+            }
+            .print-button {
+              display: none;
+            }
+            .editable {
+              border: none;
+            }
+            .editable:hover,
+            .editable:focus {
+              border: none;
+              background-color: transparent;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <button class="print-button" onclick="window.print()">
+          Print / Save as PDF
+        </button>
+
+        <!-- Title Page -->
+        <div class="page title-page">
+          <h1 contenteditable="true" class="editable">
+            Project Title: Grievance Express – A Smart Complaint Tracking and
+            Disposal System for Dang District
+          </h1>
+
+          <div class="team-info">
+            <p contenteditable="true" class="editable">
+              Team Name: [Your Team Name]
+            </p>
+            <p contenteditable="true" class="editable">
+              Team Members: [List of Team Members with Roles]
+            </p>
+            <p contenteditable="true" class="editable">
+              Guided By: [Name of Your Guide/Sir]
+            </p>
+          </div>
+
+          <p contenteditable="true" class="editable">
+            Submitted To: Smart Gujarat Hackathon
+          </p>
+
+          <div class="submission-info">
+            <p contenteditable="true" class="editable">
+              Date: [Submission Date]
+            </p>
+          </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="page">
+          <h1>Table of Contents</h1>
+          <ol>
+            <li>Introduction</li>
+            <li>Problem Statement</li>
+            <li>Objectives</li>
+            <li>Proposed Solution</li>
+            <li>System Architecture</li>
+            <li>Features</li>
+            <li>Implementation Details</li>
+            <li>Screenshots and Flowcharts</li>
+            <li>Expected Outcomes</li>
+            <li>Potential Impact</li>
+            <li>Future Enhancements</li>
+            <li>Conclusion</li>
+            <li>References (if any)</li>
+          </ol>
+        </div>
+
+        <!-- Introduction -->
+        <div class="page">
+          <h1>1. Introduction</h1>
+          <div contenteditable="true" class="editable">
+            <p>Briefly introduce the project.</p>
+            <p>
+              Explain the purpose of the project and its relevance to the Dang
+              District.
+            </p>
+            <p>
+              Mention the need for a smart complaint tracking system and how it
+              aligns with the Smart Gujarat Hackathon's goals.
+            </p>
+          </div>
+          <div class="example">
+            <p>
+              "Grievance Express is a smart complaint tracking and disposal
+              system designed to address the increasing burden of day-to-day
+              complaints in Dang District. The system aims to streamline the
+              process of complaint resolution, ensuring accountability,
+              transparency, and timely disposal of grievances. By leveraging
+              technology, Grievance Express empowers citizens to report issues
+              effortlessly while enabling officials to track and resolve
+              complaints efficiently."
+            </p>
+          </div>
+        </div>
+
+        <!-- Problem Statement -->
+        <div class="page">
+          <h1>2. Problem Statement</h1>
+          <div contenteditable="true" class="editable">
+            <p>
+              Rephrase the problem statement provided by the District
+              Development Office, Dang-Ahwa.
+            </p>
+            <p>Highlight the current challenges:</p>
+            <ul>
+              <li>Lack of a standard mechanism for complaint tracking.</li>
+              <li>Missing inter-department coordination.</li>
+              <li>Time-consuming and inefficient processes.</li>
+              <li>Difficulty for citizens to report and track complaints.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Objectives -->
+        <div class="page">
+          <h1>3. Objectives</h1>
+          <div contenteditable="true" class="editable">
+            <p>List the goals of your project.</p>
+            <ul>
+              <li>To create a user-friendly complaint tracking system.</li>
+              <li>To ensure timely resolution of complaints.</li>
+              <li>To provide transparency and accountability.</li>
+              <li>
+                To empower citizens with real-time updates on their complaints.
+              </li>
+              <li>To reduce the burden on officials through automation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Proposed Solution -->
+        <div class="page">
+          <h1>4. Proposed Solution</h1>
+          <div contenteditable="true" class="editable">
+            <p>Explain your solution in detail.</p>
+            <ul>
+              <li>
+                How citizens can register complaints (anonymous or with minimal
+                details).
+              </li>
+              <li>
+                Role of the Operator (you can use a more official term like
+                Complaint Coordinator).
+              </li>
+              <li>How complaints are assigned to departments.</li>
+              <li>
+                Status tracking (Logged, Assigned, Under Resolution, On Hold,
+                Resolved, Pending).
+              </li>
+              <li>Statistics and public pressure mechanism.</li>
+              <li>
+                Features like Gujarati language support, voice-to-text, and
+                audio descriptions.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- System Architecture -->
+        <div class="page">
+          <h1>5. System Architecture</h1>
+          <div contenteditable="true" class="editable">
+            <p>
+              Include a flowchart or diagram showing the workflow of the system.
+            </p>
+            <p>
+              Citizen submits a complaint → Complaint Coordinator assigns it to
+              the relevant department → Department updates the status → Citizen
+              receives updates.
+            </p>
+            <p>
+              Mention the technologies used (e.g., web application, mobile app,
+              AI, etc.).
+            </p>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="page">
+          <h1>6. Features</h1>
+          <div contenteditable="true" class="editable">
+            <p>List the key features of your system:</p>
+            <ul>
+              <li>Multi-language support (Gujarati and English).</li>
+              <li>Voice-to-text and audio descriptions for accessibility.</li>
+              <li>Real-time complaint tracking for citizens.</li>
+              <li>Statistics dashboard for public accountability.</li>
+              <li>
+                Role-based access for officials (Mamlatdar, SDM, Collector).
+              </li>
+              <li>Future AI-based ranking system for departments.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Implementation Details -->
+        <div class="page">
+          <h1>7. Implementation Details</h1>
+          <div contenteditable="true" class="editable">
+            <p>Explain how the system will be implemented.</p>
+            <ul>
+              <li>Frontend: User-friendly web interface.</li>
+              <li>
+                Backend: Database for storing complaints, departments, and
+                status updates.
+              </li>
+              <li>Authentication: Mobile number-based login for officials.</li>
+              <li>Security: Measures to ensure data privacy and security.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Screenshots and Flowcharts -->
+        <div class="page">
+          <h1>8. Screenshots and Flowcharts</h1>
+          <div contenteditable="true" class="editable">
+            <p>Include screenshots of:</p>
+            <ul>
+              <li>Complaint submission form.</li>
+              <li>Citizen dashboard (showing complaint status).</li>
+              <li>
+                Official dashboard (showing all complaints and statistics).
+              </li>
+            </ul>
+            <p>Add flowcharts for:</p>
+            <ul>
+              <li>Complaint workflow.</li>
+              <li>System architecture.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Expected Outcomes -->
+        <div class="page">
+          <h1>9. Expected Outcomes</h1>
+          <div contenteditable="true" class="editable">
+            <p>Highlight the expected results:</p>
+            <ul>
+              <li>Speedy disposal of complaints.</li>
+              <li>Increased public satisfaction.</li>
+              <li>Improved inter-department coordination.</li>
+              <li>Transparency and accountability in the system.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Potential Impact -->
+        <div class="page">
+          <h1>10. Potential Impact</h1>
+          <div contenteditable="true" class="editable">
+            <p>Discuss the broader impact of your project:</p>
+            <ul>
+              <li>Improved governance and public trust.</li>
+              <li>Efficient use of resources.</li>
+              <li>Scalability to other districts in Gujarat.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Future Enhancements -->
+        <div class="page">
+          <h1>11. Future Enhancements</h1>
+          <div contenteditable="true" class="editable">
+            <p>Mention features you plan to add in the future:</p>
+            <ul>
+              <li>AI-based ranking system for departments.</li>
+              <li>
+                AI-powered complaint assignment (replacing the Complaint
+                Coordinator).
+              </li>
+              <li>News and scheme updates for citizens.</li>
+              <li>
+                Generalization of the system for all districts in Gujarat.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="page">
+          <h1>12. Conclusion</h1>
+          <div contenteditable="true" class="editable">
+            <p>Summarize the project and its significance.</p>
+            <p>
+              Reiterate how Grievance Express addresses the problem statement
+              and benefits the citizens and officials of Dang District.
+            </p>
+          </div>
+          <div class="example">
+            <p>
+              "Grievance Express is a transformative solution that bridges the
+              gap between citizens and government officials. By leveraging
+              technology, it ensures timely and efficient resolution of
+              complaints, fostering transparency and accountability. With its
+              user-friendly design and innovative features, Grievance Express
+              has the potential to revolutionize grievance redressal systems not
+              only in Dang District but across Gujarat."
+            </p>
+          </div>
+        </div>
+
+        <!-- References -->
+        <div class="page">
+          <h1>13. References</h1>
+          <div contenteditable="true" class="editable">
+            <p>
+              Include any references or resources used in your project (if
+              applicable).
+            </p>
+          </div>
+        </div>
+
+        <script>
+          // Make all editable elements truly editable
+          document.addEventListener("DOMContentLoaded", function () {
+            const editables = document.querySelectorAll(".editable");
+            editables.forEach(function (element) {
+              element.setAttribute("contenteditable", "true");
+            });
+          });
+        </script>
+      </body>
+    </html>
+    <script src="./index.mjs" type="module"></script>
+  </body>
+</html>

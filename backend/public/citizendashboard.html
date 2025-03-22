@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dang Civic Connect - Digital Grievance Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #3730a3;
+            --accent: #059669;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* background: url("D:\Downloads\4990245-hd_1920_1080_30fps.mp4"); */
+            /* background: #f1f5f9; */
+            color: var(--dark);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Modern Navigation */
+        .nav-column {
+            position: sticky;
+            top: 30px;
+            height: calc(100vh - 60px);
+            min-width: 280px;
+        }
+        .nav-column-inner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 25px;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+            overflow-y: auto;
+        }
+        @media (max-width: 1200px) {
+            .nav-column {
+                position: static;
+                height: auto;
+            }
+            .nav-column-inner {
+                height: auto;
+            }
+        }
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(8px);
+        }
+
+        .active-section {
+            background: white !important;
+            color: var(--primary) !important;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Content Area Styling */
+        .content-area {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header, h2 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-header::before, h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 70%;
+            width: 5px;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        /* News Section Design */
+        .news-grid, #newsContent {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .news-card, .news-item {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover, .news-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card h3, .news-item h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        /* Statistics Dashboard */
+        .stats-grid, #stats-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+
+        /* Modern Form Design */
+        .complaint-form, #complaint {
+            /* background: var(--light); */
+            background: #edf4fb;
+
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .form-heading {
+            font-size: 24px;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .form-heading::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Complaints List */
+        .complaints-list {
+            margin-top: 40px;
+        }
+
+        .complaint-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .complaint-card:hover {
+            transform: translateX(5px);
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .status-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 24px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        /* Update contrast for status badges */
+        .pending { background: #f59e0b; color: white; }
+        .in-progress { background: #3b82f6; color: white; }
+        .resolved { background: #10b981; color: white; }
+
+        /* Add form field styling */
+        .form-field-group {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        fieldset {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        legend {
+            padding: 0 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Fix hidden class */
+        .hidden { display: none; }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .nav-column {
+                position: static;
+                height: auto;
+            }
+
+            .nav-button {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header, h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Interactive Elements */
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 35px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 20px;
+            width: fit-content; /* Makes the button only as wide as needed */
+            max-width: 100%; /*Prevents overflow on small screens*/
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Status Section */
+        .status-timeline, .status-section {
+            border-left: 3px solid #e2e8f0;
+            margin-left: 10px;
+            padding-left: 25px;
+        }
+
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .complaint-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            background: var(--light);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        #stats-content p {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        #stats-content span {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Enhanced UI Elements */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #mainContent > div:not(.hidden) {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Improved Form Styling */
+        input:hover, select:hover, textarea:hover {
+            border-color: #cbd5e1;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required-star {
+            color: #ef4444;
+            font-size: 14px;
+        }
+
+        /* Improved Status Badges */
+        .status-badge {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            to { left: 100%; }
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            /* Remove overflow: hidden */
+        }
+
+        .video-background {
+            position: fixed; /* Keep the video fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensure it stays behind the content */
+            overflow: hidden; /* Hide overflow for the video */
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative; /* Add this */
+            height: calc(100vh - 60px); /* Set a fixed height */
+            overflow-y: auto; /* Enable scrolling */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.content-area::-webkit-scrollbar {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <!-- <video autoplay muted loop id="bg-video">
+            <source src="\Hack2\9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video> -->
+    </div>
+    <div class="container">
+        <div class="content-area" id="mainContent">
+            <!-- News Section -->
+            <div id="news">
+                <h2>Latest Updates</h2>
+                <div id="newsContent">
+                    <div class="news-item">
+                        <h3>New Grievance Portal Launched in Dang</h3>
+                        <p>Experience seamless complaint resolution with our AI-powered civic management system.</p>
+                    </div>
+                    <div class="news-item">
+                        <h3>Improvement in Public Services</h3>
+                        <p>40% faster resolution times achieved through digital transformation initiatives.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div id="statistics" class="hidden">
+                <h2>Complaint Statistics</h2>
+                <div id="stats-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-inbox"></i></div>
+                            <div class="stat-number" id="totalComplaints">0</div>
+                            <p>Total Requests</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-number" id="resolvedComplaints">0</div>
+                            <p>Resolved Cases</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-number" id="pendingComplaintsCount">0</div>
+                            <p>Active Cases</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Section -->
+            <div id="complaint" class="hidden">
+                <div class="form-heading">File New Complaint</div>
+                <form id="complaintForm" method="POST" action="/uploadsom" enctype="multipart/form-data">
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label>Full Name <span class="required-star">*</span></label>
+                                <input type="text" id="name" name="name" required placeholder="surname name father's_name">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number <span class="required-star">*</span></label>
+                                <input type="text" id="mobile" name="mobile"  placeholder="+919876543210" required>
+                            </div>
+                        </div>
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label>Taluka <span class="required-star">*</span></label>
+                                <select id="taluka"  name="taluka"  required>
+                                    <option value="">Select Taluka</option>
+                                    <option value="Ahwa">Ahwa</option>
+                                    <option value="Subir">Subir</option>
+                                    <option value="Waghai">Waghai</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Location Type <span class="required-star">*</span></label>
+                                <select id="locationType" name="locationType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="village">Village</option>
+                                    <option value="city">City</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Village/City <span class="required-star">*</span></label>
+                            <select id="villageCity" name="villageCity"  required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Complete Address <span class="required-star">*</span></label>
+                            <textarea id="address" name="address" rows="3" required></textarea>
+                        </div>
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label>Pincode <span class="required-star">*</span></label>
+                                <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Exact Location of the problem <span class="required-star">*</span></label>
+                                <textarea id="location" name="exactLocation"  rows="1" required></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Complaint Information</legend>
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label>Complaint Category <span class="required-star">*</span></label>
+                                <select id="complaintCategory" name="complaintCategory"  required>
+                                    <option value="">(શ્રેણી પસંદ કરો)Select Category</option>
+                                    <option value="Water Supply"> (પાણી પુરવઠો) Water Supply</option>
+                                    <option value="Traffic Signal"> (ટ્રાફિક સિગ્નલ) Traffic Signal</option>
+                                    <option value="Swimming Pool"> (સ્વિમિંગ પુલ) Swimming Pool</option>
+                                    <option value="Street Light"> (સ્ટ્રીટ લાઈટ) Street Light</option>
+                                    <option value="Stray Dog Sterilization and ARV"> (રખડતા કુતરા) Stray Dog Sterilization and ARV</option>
+                                    <option value="Stray Cattle"> (રખડતા ઢોર) Stray Cattle</option>
+                                    <option value="Storm Water Drainage Project"> (વરસાદી ગટર પ્રોજેક્ટ) Storm Water Drainage Project</option>
+                                    <option value="Public Toilet"> (જાહેર સૌચાલઈ) Public Toilet</option>
+                                    <option value="Public Health"> (જાહેર આરોગ્ય) Public Health</option>
+                                    <option value=" Parks and Garden"> (પાર્ક અને ગાર્ડેન) Parks and Garden</option>
+                                    <option value="Open Defecation"> (જાહેરમાં શૌચાલય) Open Defecation</option>
+                                    <option value="Mall Parking Fee Related"> (મોલ પાર્કિંગ ફી ને લગતી) Mall Parking Fee Related</option>
+                                    <option value="Hospital And Dispensary"> (હોસ્પિટલ અને દવાખાના) Hospital And Dispensary</option>
+                                    <option value="Gujarat Rural Urban Housing Scheme"> (ગુજરાત ગ્રામ્ય શહેરી હાઉસિંગ સ્કીમ) Gujarat Rural Urban Housing Scheme</option>
+                                    <option value="Gas Line"> (ગેસ લાઈન) Gas Line</option>
+                                    <option value="Garbage And Cleanliness"> (કચરો અને સફાઈ) Garbage And Cleanliness</option>
+                                    <option value="Encroachment"> (એનક્રોચમેન્ટ(દબાણ)) Encroachment</option>
+                                    <option value=" Emergency"> (ઈમરજેંસી) Emergency</option>
+                                    <option value="E Waste"> (ઈ વેસ્ટ) E Waste</option>
+                                    <option value="Drainage Project"> (ગટર પ્રોજેક્ટ) Drainage Project</option>
+                                    <option value="Drainage And Storm Drain"> (ગટર અને વરસાદી ગટર) Drainage And Storm Drain</option>
+                                    <option value="Door To Door Garbage Collection"> (કચરા ગાડી વિષે ની ફરીયાદ) Door To Door Garbage Collection</option>
+                                    <option value="Dead Animals"> (મરેલા જાનવર) Dead Animals</option>
+                                    <option value="City Bus Services"> (સિટી બસ સર્વિસીસ) City Bus Services</option>
+                                    <option value="Birth And Death"> (જન્મ અને મરણ) Birth And Death</option>
+                                    <option value="Auditorium"> (ઓડિટોરિયમ) Auditorium</option>
+                                    <option value="Auditorium"> (અતિથિ ગૃહ) Auditorium</option>
+                                    <option value="Assessment Tax Rebate"> (અસેસમેન્ટ ટેક્સ રિબેટ) Assessment Tax Rebate</option>
+                                    <option value="Arogyam"> (આરોગ્યમ) Arogyam</option>
+                                    <option value="Air Quality Management"> (હવાની ગુણવત્તા વ્યવસ્થાપન) Air Quality Management</option>
+                                    <option value="Other"> ( અન્ય )  Other </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Complaint Type <span class="required-star">*</span></label>
+                                <select id="complaintType" name="complaintType">
+                                    <option value="">Select Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Problem Description <span class="required-star">*</span></label>
+                            <textarea id="description" rows="5" name="problemDesc"  required></textarea>
+                        </div>
+                        <div>
+                            <label for="imageUpload">Upload a Picture:</label>
+                            <input type="file" id="image" name="image" accept="image/*"> 
+                        </div>
+                        <button type="submit" id="submit-button">Submit Complaint</button>
+                    </fieldset>
+                </form>
+                <div class="complaints-list">
+                    <h3 class="section-header">Your Active Complaints</h3>
+                    <div id="pendingComplaints"></div>
+                </div>
+            </div>
+
+            <!-- Status Section -->
+            <div id="status" class="hidden">
+                <h2>Your Complaint Status</h2>
+                <div id="allComplaints" class="status-section"></div>
+            </div>
+
+            <!-- Profile Section (placeholder) -->
+            <div id="profile" class="hidden">
+                <h2>Your Profile</h2>
+                <div class="profile-content">
+                    <p>Profile information will be displayed here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-column">
+            <div class="nav-column-inner"> <!-- Add this wrapper -->
+                <button class="nav-button active-section" id="newsButton">
+                    <i class="fas fa-newspaper"></i> Latest News
+                </button>
+                <button class="nav-button" id="statisticsButton" onclick="window.location.href='graph.html'">
+                    <i class="fas fa-chart-bar"></i> Statistics
+                </button>
+                <button class="nav-button" id="complaintButton">
+                    <i class="fas fa-edit"></i> File Complaint
+                </button>
+                <button class="nav-button" id="statusButton" onclick="updatePendingComplaints()">
+                    <i class="fas fa-search"></i> Check Status
+                </button>
+                <button class="nav-button" id="profileButton">
+                    <i class="fas fa-user"></i> Your Profile
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+//  async function submitComplaint() {
+//     const form = document.getElementById("complaintForm"); // Ensure the form ID is correct
+//     const formData = new FormData(form);
+
+//     try {
+//         const response = await fetch("http://localhost:5000/uploadsom", {  
+//             method: "POST",
+//             body: formData,
+//         });
+
+//         if (!response.ok) {
+//             const errorText = await response.text();
+//             throw new Error(`Server responded with ${response.status}: ${errorText}`);
+//         }
+
+//         const data = await response.json();
+//         alert("Complaint submitted successfully!");
+//         console.log("✔ Response:", data);
+
+//         form.reset(); // Reset the form after successful submission
+//     } catch (error) {
+//         console.error("❌ Error submitting complaint:", error);
+//         alert("Failed to submit complaint: " + error.message);
+//     }
+// }
+
+// Replace the existing form submission listener with:
+// document.getElementById('complaintForm').addEventListener('submit', submitComplaint);
+        const locations = {
+            Ahwa: [
+                'Ahwa', 'Baripada', 'Bhavandagad', 'Borkhal', 'Chankhal', 'Chaukiya', 'Chinchli', 'Dhavalidod', 
+                'Diwan Tembrun', 'Gadhvi', 'Galkund', 'Ghoghl', 'Gondalvihir', 'Gotiyamal', 'Harpada', 
+                'Lahancharcha', 'Linga', 'Mahalpada', 'Malegaon', 'Morzira', 'Pimpri', 'Samgahan', 
+                'Taklipada (Pipalaidevi)', 'Wasurna', 'Chikatya', 'Jakhana', 'Don'
+            ],
+            Subir: [
+                'Subir', 'Bardipada (Saja)', 'Chinchvihir', 'Daher', 'Garkhadi', 'Gavdahad', 
+                'Hanwatpada (Pipaldahadsaja)', 'Kadmal (Subir)', 'Kakshala', 'Keshbandh', 'Khambhla', 
+                'Kirli', 'Lavchali', 'Mahal', 'Malga', 'Naktia Hanwat', 'Pipalai Devi', 'Pipaldahad', 
+                'Shempuamba', 'Singana', 'Subir'
+            ],
+            Waghai: [
+                'Waghai', 'Barkhandhia', 'Bhalkhet', 'Bhendmal', 'Bhenskatri', 'Chichigaontha', 
+                'Chikar (Jhavdasaja)', 'Chinchod', 'Dagadiamba', 'Daguniya', 'Dokpatal', 'Godadiya', 
+                'Jhariya (Dungarda)', 'Jhavda', 'Khatal', 'Kosimda', 'Manmodi', 'Nadakchond', 
+                'Nanapada', 'Rambhas', 'Sakarpatal', 'Sarwar', 'Kalibel'
+            ]
+        };
+
+        const complaintTypes = {
+            "Water Supply": [
+                { value: " Contaminated Water (Impure)", text: " ( અશુદ્ધ, ક્ન્ટામિનેટેડ પાણી  )  Contaminated Water (Impure)" },
+                { value: " Direct Motor Running", text: " ( ડાયરેક્ટ મોટર ચલાવવી )  Direct Motor Running" },
+                { value: "Illegal Connection", text: " ( ગેરકાયદેસર જોડાણ )  Illegal Connection" },
+                { value: "Insufficient Water Supply Duration", text: " ( અપૂરતો પાણી વિતરણનો સમય ગાળો   )  Insufficient Water Supply Duration" },
+                { value: "Leakage of Public Stand Post", text: " ( જાહેર સ્ટેન્ડ પોસ્ટની દુરસ્તી  )  Leakage of Public Stand Post" },
+                { value: "Low Water Pressure", text: " ( નીચા પાણીનું દબાણ  )  Low Water Pressure" },
+                { value: "Main Feeder Line Leakage", text: " ( મુખ્ય નળીકા / ફીડલ નળીકા લીકેજ  )  Main Feeder Line Leakage" },
+                { value: "Pipeline Leakage", text: " ( પાઇપલાઈન લીકેજ  )  Pipeline Leakage" },
+                { value: "Reduction of Chlorination Intensity", text: " ( પીવાના પાણી પુરવઠામાં કલોરીનીકરણની તીવ્રતા સ્તર ઘટાડો  )  Reduction of Chlorination Intensity" },
+                { value: "Valve Repairing", text: " ( વાલ્વ રિપેરિંગની  ફરિયાદો )  Valve Repairing" },
+                { value: "Repairing of Hand Pump", text: " ( હેન્ડ પંપ સમારકામ )  Repairing of Hand Pump" },
+                { value: "Valve Leakage", text: " ( વાલ્વ લીકેજ  )  Valve Leakage" },
+                { value: "Water Network Not Exist", text: " ( પાણીનું નેટવર્ક હયાત નથી )  Water Network Not Exist" },
+                { value: "Water Supply Not Received", text: " ( પાણી પુરવઠો મળ્યો નથી  )  Water Supply Not Received" },
+                { value: "Other", text: " ( અન્ય )  Other" }
+            ],
+            "Traffic Signal": [
+                { value: "Advertise Related Issue", text: " ( જાહેરાત અંગે સમસ્યા )  Advertise Related Issue" },
+                { value: "  Display Board Not Working", text: " ( ડિસ્પ્લે બોર્ડ નથી ચાલતું )  Display Board Not Working" },
+                { value: "Mal Function", text: " ( સમાન સંકેત (માલ ફંક્શન) )  Mal Function" },
+                { value: "Pole Damage", text: " ( થાંભલો જોખમી છે )  Pole Damage" },
+                { value: "Signal Light Damage", text: " ( લાઈટમાં નુકસાન છે )  Signal Light Damage" },
+                { value: "Signal Not Working", text: " ( સિગ્નલ ચાલતું નથી )  Signal Not Working" },
+                { value: "Signal Timing Improper", text: " ( સિગ્નલ ટાઈમ અયોગ્ય )  Signal Timing Improper" },
+                { value: "Other", text: " ( અન્ય  )  Other" }
+            ],
+            "Swimming Pool": [
+                { value: " Cleanliness Issue", text: " ( સ્વચ્છતાની સમસ્યા )  Cleanliness Issue" },
+                { value: "High Chlorine", text: " ( વધુ ક્લોરીન )  High Chlorine" },
+                { value: "Not Taking Care of Hygiene", text: " ( સ્વચ્છતાની કાળજી રાખતા નથી )  Not Taking Care of Hygiene" },
+                { value: "Shower Not Working", text: " ( ફુવારો ચાલતો નથી )  Shower Not Working" },
+                { value: "Staff Not Present", text: " ( કર્મચારી હાજર નથી )  Staff Not Present" },
+                { value: " Water Not Changed", text: " ( પાણી બદલાતુ નથી )  Water Not Changed" },
+                { value: "Water Not Cleaned", text: " ( પાણીની સફાઈ થયેલ નથી )  Water Not Cleaned" },
+                { value: "Other", text: " ( અન્ય )  Other" }
+            ],
+            "Street Light": [
+                { value: "Area Street Light Not Working", text: " ( વિસ્તારમાં સ્ટ્રીટ લાઈટ ચાલતી નથી  )  Area Street Light Not Working" },
+                { value: "Electric Shock/Current Leakage on Pole", text: " ( થાંબલા પર ઈલેક્ટ્રીક શોક / હાલના થાંબલા પર લિકેજ )  Electric Shock/Current Leakage on Pole" },
+                { value: " Insufficient Lighting", text: " ( અપૂરતો પ્રકાશ  )  Insufficient Lighting" },
+                { value: "LED Light Not Working", text: " ( LED લાઈટ ચાલતી નથી  )  LED Light Not Working" },
+                { value: "Overhead Line Problem", text: " ( ઓવરહેડ લાઈન સમસ્યા  )  Overhead Line Problem" },
+                { value: "Pole is in Dangerous Condition", text: " ( થાંબલો જોખમકારક પરિસ્થિતિમાં છે  )  Pole is in Dangerous Condition" },
+                { value: "Removable of Unserviceable Street Light", text: " ( નકામી સ્ટ્રીટ લાઈટ દુર કરવા બાબત  )  Removable of Unserviceable Street Light" },
+                { value: "Sodium Light Not Working", text: " ( સોડીયમ લાઈટ ચાલતી નથી  )  Sodium Light Not Working" },
+                { value: " Sparking on Street Light Pole", text: " ( સ્ટ્રીટ લાઈટ ના થાંબલા ઉપર સ્પાર્કીંગ   )  Sparking on Street Light Pole" },
+                { value: " Switching ON/OFF Time Problem", text: " ( લાઈટ ચાલુ / બંધ ના સમયની સમસ્યા  )  Switching ON/OFF Time Problem" },
+                { value: " Tube Light Not Working", text: " ( ટ્યુબ લાઈટ ચાલતી નથી  )  Tube Light Not Working" },
+                { value: "Other", text: " ( અન્ય  )  Other" }
+            ]
+        };
+
+        // // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data
+            // if (!localStorage.getItem('complaints')) {
+            //     localStorage.setItem('complaints', JSON.stringify([{
+            //         id: Date.now(),
+            //         name: "John Doe",
+            //         mobile: "1234567890",
+            //         taluka: "Ahwa",
+            //         locationType: "village",
+            //         villageCity: "Ahwa",
+            //         address: "Main Road",
+            //         pincode: "394710",
+            //         problemLocation: "Public Road",
+            //         description: "Potholes on main road",
+            //         status: "pending",
+            //         date: new Date().toLocaleString()
+            //     }]));
+            // }
+
+            // Set up navigation buttons
+            document.getElementById('newsButton').addEventListener('click', function() {
+                showSection('news');
+            });
+            
+            document.getElementById('statisticsButton').addEventListener('click', function() {
+                showSection('statistics');
+            });
+            
+            document.getElementById('complaintButton').addEventListener('click', function() {
+                showSection('complaint');
+            });
+            
+            document.getElementById('statusButton').addEventListener('click', function() {
+                showSection('status');
+            });
+            
+            document.getElementById('profileButton').addEventListener('click', function() {
+                showSection('profile');
+            });
+
+            // Set up form event listeners
+            document.getElementById('taluka').addEventListener('change', updateVillageCityOptions);
+            document.getElementById('locationType').addEventListener('change', updateVillageCityOptions);
+            document.getElementById('complaintCategory').addEventListener('change', updateComplaintType);
+            
+            // Set up form submission
+            document.getElementById('complaintForm').addEventListener('submit', function(event) {
+                submitComplaint(event);
+            });
+
+            // Initialize the app
+            showSection('news');
+            // updatePendingComplaints();
+            updateStatistics();
+        });
+
+        // Function to show a specific section
+        function showSection(sectionId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-button').forEach(function(btn) {
+                btn.classList.remove('active-section');
+            });
+            
+            // Hide all sections
+            document.querySelectorAll('#mainContent > div').forEach(function(section) {
+                section.classList.add('hidden');
+            });
+            
+            // Activate the correct button based on section ID
+            let activeBtn;
+            switch(sectionId) {
+                case 'news':
+                    activeBtn = document.getElementById('newsButton');
+                    break;
+                case 'statistics':
+                    activeBtn = document.getElementById('statisticsButton');
+                    break;
+                case 'complaint':
+                    activeBtn = document.getElementById('complaintButton');
+                    break;
+                case 'status':
+                    activeBtn = document.getElementById('statusButton');
+                    break;
+                case 'profile':
+                    activeBtn = document.getElementById('profileButton');
+                    break;
+            }
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active-section');
+            }
+            
+            // Show the selected section
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.remove('hidden');
+            }
+            
+            // If status section is shown, update its content
+            // if (sectionId === 'status') {
+            //     // showStatus();
+            // }
+        }
+
+        // Function to display status information
+        async function updatePendingComplaints() {
+    console.log("updatePendingComplaints called"); // Debug log
+    try {
+        const mobile = sessionStorage.getItem("citizenMobile");
+        if (!mobile) {
+            console.error("No mobile number found in sessionStorage.");
+            document.getElementById('pendingComplaints').innerHTML = '<p>Please log in first.</p>';
+            return;
+        }
+
+        const response = await fetch(`/omcitizen?mobile=${mobile}`);
+        console.log("API Response:", response); // Debug log
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch complaints');
+        }
+
+        const complaints = await response.json();
+        console.log("Complaints Data:", complaints); // Debug log
+
+        const pendingDiv = document.getElementById('pendingComplaints');
+        const htmlContent = complaints.length ? complaints.map(complaint => {
+            if (!complaint.complaintid || !complaint.department || !complaint.complaintdesc) {
+                console.error("Invalid complaint object:", complaint);
+                return ''; // Skip invalid complaints
+            }
+            return `
+                <div class="complaint-card">
+                    <strong>Complaint-ID:</strong> ${complaint.complaintid}<br>
+                    <strong>Department:</strong> ${complaint.department}<br>
+                    <strong>Complaint Description:</strong> ${complaint.complaintdesc}<br>
+                    <strong>Image URL:</strong> ${complaint.image_url}<br>
+                    <strong>Problem Location:</strong> ${complaint.proloc}<br>
+                    <strong>Current Status:</strong> ${complaint.dstatus}<br>
+                    <strong>Village:</strong> ${complaint.village}<br>
+                    <strong>Taluka:</strong> ${complaint.taluka}<br>
+                    <strong>Proof Image:</strong> ${complaint.image_url_proof}<br>
+                </div>
+            `;
+        }).join('') : '<p>No pending complaints found.</p>';
+
+        console.log("Generated HTML:", htmlContent); // Debug log
+        pendingDiv.innerHTML = htmlContent;
+    } catch (error) {
+        console.error('Error fetching complaints:', error);
+        document.getElementById('pendingComplaints').innerHTML = '<p>Error loading complaints.</p>';
+    }
+}
+document.getElementById('statusButton').addEventListener('click', function() {
+    showSection('status');
+    updatePendingComplaints(); // Fetch and display complaints
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Other initialization code...
+    updatePendingComplaints(); // Call this function on page load
+});
+
+        document.addEventListener("DOMContentLoaded", updatePendingComplaints);
+
+        // Function to update village/city options based on selected taluka
+        function updateVillageCityOptions() {
+            const taluka = document.getElementById('taluka').value;
+            const select = document.getElementById('villageCity');
+            
+            // Clear current options
+            select.innerHTML = `<option value="">Select Village</option>`;
+            
+            // Add new options if taluka is selected
+            if (taluka && locations[taluka]) {
+                locations[taluka].forEach(loc => {
+                    const option = document.createElement('option');
+                    option.value = loc;
+                    option.textContent = loc;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        // Function to update complaint type options based on selected category
+        function updateComplaintType() {
+            const category = document.getElementById('complaintCategory').value;
+            const typeSelect = document.getElementById('complaintType');
+            
+            // Clear current options
+            typeSelect.innerHTML = `<option value="">Select Type</option>`;
+            
+            // Add new options if category is selected
+            if (category && complaintTypes[category]) {
+                complaintTypes[category].forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.value;
+                    option.textContent = type.text;
+                    typeSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Function to handle complaint submission
+        // function submitComplaint(event) {
+        //     event.preventDefault();
+            
+        // //     // Create complaint object from form data
+        // //     const complaint = {
+        // //         id: Date.now(),
+        // //         name: document.getElementById('name').value,
+        // //         mobile: document.getElementById('mobile').value,
+        // //         taluka: document.getElementById('taluka').value,
+        // //         locationType: document.getElementById('locationType').value,
+        // //         villageCity: document.getElementById('villageCity').value,
+        // //         address: document.getElementById('address').value,
+        // //         pincode: document.getElementById('pincode').value,
+        // //         problemLocation: document.getElementById('location').value,
+        // //         complaintCategory: document.getElementById('complaintCategory').value,
+        // //         complaintType: document.getElementById('complaintType').value,
+        // //         description: document.getElementById('description').value,
+        // //         status: "pending",
+        // //         date: new Date().toLocaleString()
+        // //     };
+
+        // //     // Save complaint to local storage
+        // //     const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+        // //     complaints.push(complaint);
+        // //     localStorage.setItem('complaints', JSON.stringify(complaints));
+    
+            // Update UI
+            updatePendingComplaints();
+            updateStatistics();
+            async function updatePendingComplaints() {
+    try {
+        const mobile = sessionStorage.getItem("citizenMobile");
+        if (!mobile) {
+            console.error("No mobile number found in sessionStorage.");
+            document.getElementById('pendingComplaints').innerHTML = '<p>Please log in first.</p>';
+            return;
+        }
+
+        const response = await fetch(`/omcitizen?mobile=${mobile}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch complaints');
+        }
+
+        const complaints = await response.json();
+        const pendingDiv = document.getElementById('pendingComplaints');
+
+        pendingDiv.innerHTML = complaints.map(complaint => `
+            <div class="complaint-card">
+                <div class="complaint-header">
+                    <h4>${complaint.department}</h4>
+                    <span class="status-badge ${complaint.dstatus}">${complaint.dstatus}</span>
+                </div>
+                <p class="complaint-excerpt">${complaint.complaintdesc.substring(0, 60)}${complaint.complaintdesc.length > 60 ? '...' : ''}</p>
+                <div class="complaint-footer">
+                    <small>Complaint ID: ${complaint.complaint}</small>
+                    <span class="status-info">Operator Status: ${complaint.ostatus}</span>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching complaints:', error);
+        document.getElementById('pendingComplaints').innerHTML = '<p>Error loading complaints.</p>';
+    }
+}
+
+// Call this function when the page loads
+// document.addEventListener("DOMContentLoaded", updatePendingComplaints);
+
+
+    
+        // Function to edit an existing complaint
+        function editComplaint(id) {
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const complaint = complaints.find(c => c.id === id);
+            
+            if (complaint) {
+                // Show complaint section
+                showSection('complaint');
+                
+                // Fill form with complaint data
+                document.getElementById('name').value = complaint.name;
+                document.getElementById('mobile').value = complaint.mobile;
+                document.getElementById('taluka').value = complaint.taluka;
+                document.getElementById('locationType').value = complaint.locationType;
+                
+                // Update dependent dropdowns
+                updateVillageCityOptions();
+                
+                // Set village/city after options are populated
+                setTimeout(() => {
+                    document.getElementById('villageCity').value = complaint.villageCity;
+                }, 100);
+                
+                document.getElementById('address').value = complaint.address;
+                document.getElementById('pincode').value = complaint.pincode;
+                document.getElementById('location').value = complaint.problemLocation;
+                
+                // Set complaint category and update type options
+                document.getElementById('complaintCategory').value = complaint.complaintCategory;
+                updateComplaintType();
+                
+                // Set complaint type after options are populated
+                setTimeout(() => {
+                    document.getElementById('complaintType').value = complaint.complaintType;
+                }, 100);
+                
+                document.getElementById('description').value = complaint.description;
+                
+                // Scroll to complaint form
+                window.scrollTo({
+                    top: document.getElementById('complaint').offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    
+        // Function to update statistics display
+        function updateStatistics() {
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            
+            // Update counts
+            document.getElementById('totalComplaints').textContent = complaints.length;
+            const resolved = complaints.filter(c => c.status === 'resolved').length;
+            document.getElementById('resolvedComplaints').textContent = resolved;
+            document.getElementById('pendingComplaintsCount').textContent = complaints.length - resolved;
+        }
+    </script>
+</body>
+</html>

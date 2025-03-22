@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolved Complaints</title>
+    <style>
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Video background container */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Video styling */
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay to darken the video */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left side content */
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto;
+            align-content: start;
+        }
+
+        .left-side::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Right side navigation bar */
+        .right-side {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 20px 30px 0;
+            height: calc(100vh - 60px);
+            width: 250px;
+            overflow-y: auto;
+            background: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 30px;
+            box-sizing: border-box;
+            color: #fff;
+        }
+
+        .right-side ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-side h2 {
+            color: #fff;
+            margin-bottom: 25px;
+        }
+
+        .right-side button {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .right-side button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Complaint card styles */
+        .complaintcard {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 25px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            max-height: 400px;
+        }
+
+        .content:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .content p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .content p strong {
+            color: #89f7fe;
+            font-weight: 600;
+        }
+
+        .status-text {
+            color: #4CAF50 !important;
+            font-weight: bold;
+        }
+
+        .glass-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Video background -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <div class="left-side">
+            <div class="complaintcard" id="complaintcard"></div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-side">
+            <h2>Resolved Complaints</h2>
+            <button class="glass-btn" onclick="window.location.href='der.html'">Refresh</button>
+            <button class="glass-btn" onclick="window.location.href='de.html'">Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Original JavaScript functionality maintained
+        document.addEventListener('DOMContentLoaded', fetchResolvedComplaints);
+
+        async function fetchResolvedComplaints() {
+            const storedData = sessionStorage.getItem('Department');
+            if (!storedData) {
+                alert("Department data not found in session storage.");
+                return;
+            }
+
+            const department = JSON.parse(storedData).department;
+
+            try {
+                const response = await fetch(`/api/complaints/resolved/${encodeURIComponent(department)}`);
+                if (!response.ok) throw new Error("Failed to fetch complaints.");
+                
+                const data = await response.json();
+                renderComplaints(data.complaints);
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to load complaints. Please try again.");
+            }
+        }
+
+        function renderComplaints(complaints) {
+            const container = document.getElementById("complaintcard");
+            container.innerHTML = "";
+
+            if (complaints.length === 0) {
+                container.innerHTML = "<p style='color: white'>No resolved complaints for this department.</p>";
+                return;
+            }
+
+            complaints.forEach(complaint => {
+                const card = document.createElement("div");
+                card.className = "content";
+
+                card.innerHTML = `
+                    <p><strong>Department:</strong> ${complaint.complaintdep}</p>
+                    <p><strong>Description:</strong> ${complaint.complaintdesc}</p>
+                    <p><strong>Taluka:</strong> ${complaint.taluka}</p>
+                    <p><strong>Mobile Number:</strong> ${complaint.mobilenum}</p>
+                    <p><strong>Status:</strong> <span class="status-text">${complaint.status}</span></p>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Complaints</title>
+    <style>
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Video background container */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Video styling */
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay to darken the video */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left side content */
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto;
+            align-content: start;
+        }
+
+        .left-side::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Right side navigation bar */
+        .right-side {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 20px 30px 0;
+            height: calc(100vh - 60px);
+            width: 250px;
+            overflow-y: auto;
+            background: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 30px;
+            box-sizing: border-box;
+            color: #fff;
+        }
+
+        .right-side ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-side h2 {
+            color: #fff;
+            margin-bottom: 25px;
+        }
+
+        .right-side button {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .right-side button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Complaint card styles */
+        .complaintcard {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 25px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            max-height: 400px;
+        }
+
+        .content:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .content p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .content p strong {
+            color: #89f7fe;
+            font-weight: 600;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .buttons button {
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(5px);
+        }
+
+        .under-btn { 
+            background: linear-gradient(45deg, #ff9800, #e68900);
+        }
+        .hold-btn{
+            background: red;
+        }
+        .resolved-btn { 
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .record-btn { 
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+        }
+
+        .upload-form {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .upload-form label {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video background -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <div class="left-side">
+            <div class="complaintcard" id="complaintcard"></div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-side">
+            <h2>Filter Complaints</h2>
+            <ul>
+                <li><button class="under-btn" onclick="ur()">Under Resolution</button></li>
+                <li><button class="resolved-btn" onclick="r()">Resolved</button></li>
+                <li><button class="record-btn" onclick="sa()">On Hold</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Keep the original JavaScript functionality unchanged
+        function ur() { window.location.href = "deur.html"; }
+        function r() { window.location.href = "der.html"; }
+        function sa() { window.location.href = "sa.html"; }
+
+        document.addEventListener('DOMContentLoaded', fetchComplaints);
+
+        // async function fetchComplaints() {
+        //     try {
+        //         const response = await fetch('/api/complaints');
+        //         if (!response.ok) throw new Error('Failed to fetch complaints');
+        //         const data = await response.json();
+        //         renderComplaints(data.complaints);
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         alert('Failed to load complaints. Please refresh the page.');
+        //     }
+        // }
+
+        // function renderComplaints(complaints) {
+        //     const container = document.getElementById('complaintcard');
+        //     container.innerHTML = '';
+
+        //     complaints.forEach(complaint => {
+        //         const card = document.createElement('div');
+        //         card.className = 'content';
+        //         var department = complaint.complaintdep;
+        //         sessionStorage.setItem('Department', JSON.stringify({department }));
+
+        //         card.innerHTML = `
+        //             <p><strong>Department:</strong> ${complaint.complaintdep}</p>
+        //             <p><strong>Description:</strong> ${complaint.complaintdesc}</p>
+        //             <p><strong>Taluka:</strong> ${complaint.taluka}</p>
+        //             <p><strong>Mobile Number:</strong> ${complaint.mobilenum}</p>
+        //             <p><strong>Status:</strong> ${complaint.status || 'Pending'}</p>
+
+        //             <div class="buttons">
+        //                 <button class="hold-btn" onclick="updateStatus('${complaint.mobilenum}', '${complaint.complaintdesc}', 'On Hold','water supply')">On Hold</button>
+        //                 <button class="under-btn" onclick="updateStatus('${complaint.mobilenum}', '${complaint.complaintdesc}', 'Under Resolution','water supply')">Under Resolution</button>
+        //                 <button class="resolved-btn" onclick="showUploadForm(this)">Resolved</button>
+        //             </div>
+
+        //             <form class="upload-form" enctype="multipart/form-data">
+        //                 <label>Upload Proof:</label>
+        //                 <input type="file" name="proof" accept="image/*" required>
+        //                 <button type="button" class="submit-btn" 
+        //                     onclick="submitProof('${complaint.mobilenum}', '${complaint.complaintdesc}', this, '${complaint.complaintdep}', '${complaint.taluka}')">
+        //                     Submit Proof
+        //                 </button>
+        //             </form>
+        //         `;
+        //         container.appendChild(card);
+        //     });
+        // }
+        async function fetchComplaints() {
+    try {
+        const response = await fetch('/api/complaints');
+        const data = await response.json();
+
+        console.log('API Response:', data);
+
+        if (!data.department) {
+            console.warn('Department is missing in response!'); 
+        }
+
+        renderComplaints(data);
+    } catch (error) {
+        console.error('Error fetching complaints:', error);
+    }
+}
+function renderComplaints(data) {
+    const container = document.getElementById('complaintcard');
+    container.innerHTML = '';
+
+    if (!data.department) {
+        console.warn('Department is undefined in frontend!');
+        return;
+    }
+    sessionStorage.setItem('Department', JSON.stringify({ department: data.department }));
+
+    if (!data.complaints || data.complaints.length === 0) {  
+        const message = document.createElement('p');
+        message.className = 'no-complaints';
+        message.innerHTML = `<strong>No complaints found in department: ${data.department}</strong>`;
+        container.appendChild(message);
+        return;
+    }
+    data.complaints.forEach(complaint => {
+        const card = document.createElement('div');
+        card.className = 'content';
+
+        card.innerHTML = `
+        <strong>Complaint-ID:</strong> ${card.complaintid}<br>
+        <strong>Department:</strong> ${card.department}<br>
+        <strong>Complaint Description:</strong> ${card.complaintdesc}<br>
+        <strong>Image URL:</strong> ${card.image_url}<br>
+        <strong>Problem Location:</strong> ${card.proloc}<br>
+        <strong>Current Status:</strong> ${card.status}<br>
+        <strong>Village:</strong> ${card.village}<br>
+        <strong>Taluka:</strong> ${card.taluka}<br>
+        <strong>Proof Image:</strong> ${card.image_url_proof}<br></p>  
+        <div class="buttons">
+        <button class="hold-btn" onclick="updateStatus('${complaint.mobilenum}', '${complaint.complaintdesc}', 'On Hold','water supply')">On Hold</button>
+        <button class="under-btn" onclick="updateStatus('${complaint.mobilenum}', '${complaint.complaintdesc}', 'Under Resolution','water supply')">Under Resolution</button>
+        <button class="resolved-btn" onclick="showUploadForm(this)">Resolved</button>
+        </div>
+        <form class="upload-form" enctype="multipart/form-data">
+        <label>Upload Proof:</label>
+        <input type="file" name="proof" accept="image/*" required>
+        <button type="button" class="submit-btn"onclick="submitProof('${complaint.mobilenum}', '${complaint.complaintdesc}', this, '${complaint.complaintdep}', '${complaint.taluka}')"> Submit Proof</button>
+        </form>
+        `;
+        container.appendChild(card);
+    });
+}
+
+        async function updateStatus(mobilenum, complaintdesc, status, department ,taluka) {
+            try {
+                const response = await fetch('/update-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobilenum, complaintdesc, status, department,taluka })
+                });
+                
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Status updated successfully!');
+                    fetchComplaints();
+                } else {
+                    throw new Error(result.message || 'Failed to update status');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message);
+            }
+        }
+
+        function showUploadForm(button) {
+            const card = button.closest('.content');
+            const form = card.querySelector('.upload-form');
+            document.querySelectorAll('.upload-form').forEach(f => f.style.display = 'none');
+            form.style.display = 'block';
+        }
+
+        async function submitProof(mobilenum, complaintdesc, button, complaintdep, taluka) {
+            const form = button.closest('.upload-form');
+            const fileInput = form.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file before submitting');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('proof', file);
+            formData.append('mobilenum', mobilenum);
+            formData.append('complaintdesc', complaintdesc);
+            formData.append('complaintdep', complaintdep);
+            formData.append('taluka', taluka);
+
+            try {
+                const response = await fetch('/upload-proof', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Proof uploaded successfully!');
+                    form.reset();
+                    form.style.display = 'none';
+                    fetchComplaints();
+                } else {
+                    throw new Error(result.message || 'Failed to upload proof');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

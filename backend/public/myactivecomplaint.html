@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Complaints</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .complaint-card { border: 1px solid #ddd; padding: 10px; margin: 10px; border-radius: 5px; }
+        .complaint-header { display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { padding: 5px; border-radius: 5px; font-weight: bold; }
+        .status-info { color: grey; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h2>Pending Complaints</h2>
+    <div id="pendingComplaints">Loading...</div>
+
+    <script>
+        async function updatePendingComplaints() {
+            try {
+                const mobile = sessionStorage.getItem("citizenMobile");
+                if (!mobile) {
+                    console.error("No mobile number found in sessionStorage.");
+                    document.getElementById('pendingComplaints').innerHTML = '<p>Please log in first.</p>';
+                    return;
+                }
+
+                const response = await fetch(`/omcitizen?mobile=${mobile}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch complaints');
+                }
+
+                const complaints = await response.json();
+                const pendingDiv = document.getElementById('pendingComplaints');
+                
+                pendingDiv.innerHTML = complaints.length ? complaints.map(complaint => `
+        <strong>Complaint-ID:</strong> ${complaint.complaintid}<br>
+        <strong>Department:</strong> ${complaint.department}<br>
+        <strong>Complaint Description:</strong> ${complaint.complaintdesc}<br>
+        <strong>Image URL:</strong> ${complaint.image_url}<br>
+        <strong>Problem Location:</strong> ${complaint.proloc}<br>
+        <strong>Current Status:</strong> ${complaint.dstatus}<br>
+        <strong>Village:</strong> ${complaint.village}<br>
+        <strong>Taluka:</strong> ${complaint.taluka}<br>
+        <strong>Proof Image:</strong> ${complaint.image_url_proof}<br></p> 
+                `).join('') : '<p>No pending complaints found.</p>';
+            } catch (error) {
+                console.error('Error fetching complaints:', error);
+                document.getElementById('pendingComplaints').innerHTML = '<p>Error loading complaints.</p>';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", updatePendingComplaints);
+    </script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector/DDO Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #3730a3;
+            --accent: #059669;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+        }
+
+        * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        color: var(--dark);
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 30px;
+        padding: 30px;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .nav-column {
+        position: sticky;
+        top: 30px;
+        height: calc(100vh - 60px);
+        min-width: 280px;
+    }
+    
+    .nav-column-inner {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 20px;
+        padding: 25px;
+        height: 100%;
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        overflow-y: auto;
+    }
+
+    .nav-button {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        padding: 18px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .nav-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(8px);
+    }
+
+    .active-section {
+        background: white !important;
+        color: var(--primary) !important;
+        box-shadow: 0 5px 20px rgba(99, 102, 241, 0.15);
+    }
+
+    .content-area {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+
+    .section-header, h2 {
+        font-size: 28px;
+        color: var(--dark);
+        margin-bottom: 30px;
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .section-header::before, h2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 70%;
+        width: 5px;
+        background: var(--primary);
+        border-radius: 5px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 36px;
+        font-weight: 700;
+        margin: 15px 0;
+    }
+
+    .hidden { display: none; }
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    #bg-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: translate(-50%, -50%);
+    }
+
+    @media (max-width: 1200px) {
+        .container {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+        .nav-column {
+            position: static;
+            height: auto;
+        }
+    }
+
+    .complaint-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        border-left: 4px solid var(--primary);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .complaint-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .complaint-card div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+    }
+
+    .complaint-card i {
+        color: var(--primary);
+        width: 25px;
+        text-align: center;
+    }
+
+    .status-badge {
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .pending { background: #ffedd5; color: #c2410c; }
+    .resolved { background: #dcfce7; color: #166534; }
+    .rejected { background: #fee2e2; color: #b91c1c; }
+
+    .complaint-id {
+        grid-column: 1 / -1;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--dark);
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+        margin-bottom: 10px;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+</style>
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop id="bg-video">
+            <source src="./9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="container">
+        <div class="content-area" id="mainContent">
+            <!-- Statistics Section (Default) -->
+            <div id="statistics">
+                <h2>District Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-inbox"></i></div>
+                        <div class="stat-number" id="totalComplaints">0</div>
+                        <p>Total Complaints</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-number" id="resolvedComplaints">0</div>
+                        <p>Resolved Cases</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-number" id="pendingComplaints">0</div>
+                        <p>Pending Cases</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Complaint Section -->
+            <div id="viewComplaint" class="hidden">
+                <h2>Complaint Details</h2>
+                <div class="complaint-list" id="complaintList">
+                    <!-- Complaint items will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Recent Highlights Section -->
+            <div id="recentHighlights" class="hidden">
+                <h2>Recent Updates</h2>
+                <div id="highlightsContent">
+                    <!-- Highlights will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Scheme Awareness Section -->
+            <div id="schemeAwareness" class="hidden">
+                <h2>Active Schemes</h2>
+                <div id="schemesContent">
+                    <!-- Schemes will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Edit Official Data Section -->
+            <div id="editData" class="hidden">
+                <h2>Data Management</h2>
+                <div class="data-form">
+                    <div class="form-group">
+                        <label>Update District Records</label>
+                        <input type="file" id="dataUpload" accept=".csv,.xlsx">
+                    </div>
+                    <button type="button" id="uploadBtn">Upload Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-column">
+            <div class="nav-column-inner">
+                <button class="nav-button" id="viewComplaintBtn">
+                    <i class="fas fa-eye"></i> View Complaint
+                </button>
+                <button class="nav-button active-section" id="viewStatsBtn">
+                    <i class="fas fa-chart-bar"></i> View Statistics
+                </button>
+                <button class="nav-button" id="recentHighlightsBtn">
+                    <i class="fas fa-bullhorn"></i> Recent Highlights
+                </button>
+                <button class="nav-button" id="schemeAwarenessBtn">
+                    <i class="fas fa-info-circle"></i> Scheme Awareness
+                </button>
+                <button class="nav-button" id="editDataBtn">
+                    <i class="fas fa-edit"></i> Edit Official Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sections = {
+            viewComplaintBtn: 'viewComplaint',
+            viewStatsBtn: 'statistics',
+            recentHighlightsBtn: 'recentHighlights',
+            schemeAwarenessBtn: 'schemeAwareness',
+            editDataBtn: 'editData'
+        };
+        let complaints = [];
+        let statistics = { total: 0, resolved: 0, pending: 0 };
+        let highlights = [];
+        let schemes = [];
+        document.querySelectorAll('.nav-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active-section'));
+                document.querySelectorAll('#mainContent > div').forEach(sec => sec.classList.add('hidden'));
+                const sectionId = sections[this.id];
+                document.getElementById(sectionId).classList.remove('hidden');
+                this.classList.add('active-section');
+            });
+        });
+
+        // Activate default section
+        document.getElementById('viewStatsBtn').click();
+
+        // Update statistics
+        function updateStatistics() {
+            document.getElementById('totalComplaints').textContent = statistics.total;
+            document.getElementById('resolvedComplaints').textContent = statistics.resolved;
+            document.getElementById('pendingComplaints').textContent = statistics.pending;
+        }
+
+        // Initialize
+        updateStatistics();
+        document.addEventListener("DOMContentLoaded", function () {
+    fetchComplaints();
+});
+
+async function fetchComplaints() {
+    try {
+        const response = await fetch('/api/complaints/admin'); 
+        const complaints = await response.json();
+
+        const complaintList = document.getElementById("complaintList");
+        complaintList.innerHTML = "";
+
+        complaints.forEach(complaint => {
+            const card = document.createElement("div");
+            card.classList.add("complaint-card");
+
+            card.innerHTML = `
+        <strong>Complaint-ID:</strong> ${complaint.complaintid}<br>
+        <strong>Department:</strong> ${complaint.department}<br>
+        <strong>Complaint Description:</strong> ${complaint.complaintdesc}<br>
+        <strong>Image URL:</strong> ${complaint.image_url}<br>
+        <strong>Problem Location:</strong> ${complaint.proloc}<br>
+        <strong>Current Status:</strong> ${complaint.dstatus}<br>
+        <strong>Village:</strong> ${complaint.village}<br>
+        <strong>Taluka:</strong> ${complaint.taluka}<br>
+        <strong>Proof Image:</strong> ${complaint.image_url_proof}<br></p>
+            `;
+        if(complaint.dstatus=='Resolved')
+        {
+            statistics.resolved++;
+        }
+        else
+        {
+            statistics.pending++;
+        }
+        statistics.total++;
+            complaintList.appendChild(card);
+            updateStatistics();
+        });
+    } catch (error) {
+        console.error("Error fetching complaints:", error);
+    }
+}
+    </script>
+</body>
+</html>

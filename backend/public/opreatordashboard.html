@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Dashboard</title>
+    <style>
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Video background container */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .number {
+  position: fixed;
+  top: 20px;
+  right: 300px; /* Adjust based on right-side width */
+  z-index: 1000;
+  color: white !important; /* Override black color */
+  font-size: 24px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+#number {
+  color: white; /* Was black, which blended with dark background */
+  font-size: 24px;
+}
+
+        /* Video styling */
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay to darken the video */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left side content */
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto; /* Changed from overflow-y: auto */
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto;
+            align-content: start;
+        }
+
+        .left-side::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Right side navigation bar */
+        .right-side {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 20px 30px 0; /* Added margin */
+            height: calc(100vh - 60px); /* Adjusted height for margin */
+            width: 250px;
+            overflow-y: auto;
+            background: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 30px; /* Adjusted top position */
+            /* Removed min-width if not needed */
+            box-sizing: border-box; /* Added for better sizing */
+            color: #fff;
+        }
+        .right-side ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-side ul li {
+            margin: 0;
+        }
+
+        .right-side button {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            /* Add these properties to match existing button style */
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+
+        }
+
+        .right-side .redirect-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .redir-btn:hover{
+            box-shadow: 0 4px 15px rgba(76, 175, 80, .4);
+        }
+        .right-side .decline-btn {
+            background: linear-gradient(45deg, #ff4d4d, #e60000);
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+        }
+        .decli-btn:hover{
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+        }
+
+        .right-side button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        /* Complaint card styles */
+        .complaintcard {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 25px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            /* justify-content: space-between; */
+            align-items: center;
+            min-height: 280px;
+            max-height: 400px;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .content:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .content:hover::before {
+            left: 100%;
+        }
+
+        .content p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+
+        .content strong {
+            color: #89f7fe;
+            font-weight: 600;
+        }
+
+        .content img {
+            margin: 15px 0 0 0;
+            max-width: 100%;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .buttons button {
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .glass-btn {
+            /* background: rgba(255, 255, 255, 0.1) !important; */
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: #fff !important;
+            backdrop-filter: blur(5px);
+        }
+        #number {
+        color: white; /* Change color to contrast with background */
+        font-size: 24px;
+        display: block;
+        visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video background -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="9667569-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="left-side">
+                <div id="complaintcard" class="complaintcard"></div>
+            </div>
+            <div class="number">
+                <p id="number"></p>
+            </div>
+            <div class="right-side">
+                <h2>Quick Actions</h2>
+                <ul>
+                    <li><button class="glass-btn redirect-btn" onclick="handleRedirectbutton()">Redirected Complaints</button></li>
+                    <li><button class="glass-btn decline-btn" onclick="handleDeclinebutton()">Declined Complaints</button></li>
+                </ul>
+            </div>
+        </div>
+    
+    <script>
+        fetch("http://localhost:5000/complaintcard")
+  .then(response => response.json())
+  .then(data => {
+ document.getElementById("number").innerText=data.logged;
+
+    const cardElement = document.getElementById("complaintcard");
+    let count = 1;
+    data.complaints.forEach(card => {
+      const element = document.createElement("div");
+      element.id = `card-${card.id}`;
+      element.classList.add('content');
+      element.innerHTML = `
+        <p>${count}<br>
+        <strong>Complaint-ID:</strong> ${card.complaintid}<br>
+        <strong>Department:</strong> ${card.department}<br>
+        <strong>Complaint Description:</strong> ${card.complaintdesc}<br>
+        <strong>Image URL:</strong> ${card.image_url}<br>
+        <strong>Problem Location:</strong> ${card.proloc}<br>
+        <strong>Current Status:</strong> ${card.status}<br>
+        <strong>Village:</strong> ${card.village}<br>
+        <strong>Taluka:</strong> ${card.taluka}<br>
+        <strong>Proof Image:</strong> ${card.image_url_proof}<br></p>  
+        `
+        count++;
+
+      const buttonsContainer = document.createElement("div");
+      buttonsContainer.classList.add("buttons");
+
+      const but1 = document.createElement("button");
+      but1.type = "button";
+      but1.innerText = 'Redirect';
+      but1.classList.add("redir-btn");
+      but1.addEventListener("click", () => handleRedirect(card));
+
+      const but2 = document.createElement("button");
+      but2.type = "button";
+      but2.innerText = 'Decline';
+      but2.classList.add("decli-btn");
+      but2.addEventListener("click", () => handleDecline(card));
+
+      buttonsContainer.append(but1, but2);
+      element.appendChild(buttonsContainer);
+      cardElement.appendChild(element);
+    });
+    count=0;
+  })
+  .catch(error => console.error("Error:", error));
+
+    
+        function handleDecline(card) {
+            const cardElement = document.getElementById(`card-${card.id}`);
+    
+            if (!cardElement) {
+                console.error("Card element not found!");
+                return;
+            }
+            fetch("http://localhost:5000/decline", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ mobilenum: card.mobilenum, complaint: card.complaintdesc }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Failed to decline complaint. Status: ${response.status}`);
+                }
+            })
+            .then(data => {
+                cardElement.remove();
+                setTimeout(() => {
+                    window.location.href = "http://localhost:5000/opreatordashboard.html";
+                }, 100);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to decline complaint. Please try again.");
+            });
+        }
+    
+        function handleRedirect(card) {
+            const staticData = {
+                complaintS: card.complaint,
+                problemS: card.complaintdesc,
+                talukaS: card.taluka,
+                mobilenumS: card.mobilenum
+            };
+            sessionStorage.setItem('complaintinfo', JSON.stringify(staticData));
+    
+            fetch("http://localhost:5000/redirect", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: card.id }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "http://localhost:5000/department.html";
+                } else {
+                    throw new Error("Failed to fetch department.html");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to redirect. Please try again.");
+            });
+        }
+        function handleRedirectbutton() {
+        window.location.href = "rc.html";
+    }
+
+    function handleDeclinebutton() {
+        window.location.href = "dc.html";
+    }
+
+    function handleRecords() {
+        window.location.href = "r.html";
+    }
+    </script>
+</body>
+</html>

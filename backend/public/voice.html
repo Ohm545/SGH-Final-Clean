@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gujarati Speech-to-Text</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        button { padding: 10px 15px; margin: 10px; font-size: 16px; }
+        #output { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h2>Gujarati Voice to English Text</h2>
+    <button id="startRecord">🎤 Start Recording</button>
+    <button id="stopRecord" disabled>⏹ Stop Recording</button>
+    <button id="uploadAudio" disabled>📤 Upload & Process</button>
+    <p id="status"></p>
+    <div id="output">
+        <p><strong>Gujarati:</strong> <span id="gujaratiText">---</span></p>
+        <p><strong>English:</strong> <span id="englishText">---</span></p>
+    </div>
+    <script>
+   let mediaRecorder;
+let audioChunks = [];
+
+const startRecord = document.getElementById("startRecord");
+const stopRecord = document.getElementById("stopRecord");
+
+startRecord.addEventListener("click", async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+
+    audioChunks = []; // Reset chunks
+    mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const formData = new FormData();
+        formData.append("audio", audioBlob, "recorded-audio.wav"); // Name matches multer in backend
+
+        document.getElementById("status").innerText = "Uploading...";
+        
+        try {
+            const response = await fetch("http://localhost:5000/uploadvoice", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("Server Response:", data);
+            document.getElementById("status").innerText = "Processed Successfully!";
+        } catch (error) {
+            console.error("Upload failed:", error);
+            document.getElementById("status").innerText = "Upload failed!";
+        }
+    };
+
+    mediaRecorder.start();
+    startRecord.disabled = true;
+    stopRecord.disabled = false;
+});
+
+stopRecord.addEventListener("click", () => {
+    mediaRecorder.stop();
+    startRecord.disabled = false;
+    stopRecord.disabled = true;
+});
+
+    </script>
+</body>
+</html>

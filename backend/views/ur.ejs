@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Complaints</title>
+    <script>
+        async function fetchComplaints() {
+            const department = document.getElementById("department").value;
+            const response = await fetch("/ur.ejs", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ department })
+            });
+
+            const data = await response.json();
+            const complaints = data.result.rows;  // Extract complaint rows
+
+            let tableBody = document.getElementById("complaintTableBody");
+            tableBody.innerHTML = "";  // Clear previous data
+
+            if (complaints.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='4'>No complaints found.</td></tr>";
+                return;
+            }
+
+            complaints.forEach(complaint => {
+                let row = `<tr>
+                    <td>${complaint.complaintdesc}</td>
+                    <td>${complaint.taluka}</td>
+                    <td>${complaint.mobilenum}</td>
+                    <td>${complaint.problemdesc}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Department Complaints</h1>
+
+    <label for="department">Enter Department:</label>
+    <input type="text" id="department">
+    <button onclick="fetchComplaints()">Fetch Complaints</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Complaint Description</th>
+                <th>Taluka</th>
+                <th>Mobile Number</th>
+                <th>Problem Description</th>
+            </tr>
+        </thead>
+        <tbody id="complaintTableBody">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+</body>
+</html>

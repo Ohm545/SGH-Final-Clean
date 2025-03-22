@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Express - Digital Grievance Redressal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+         body {
+        line-height: 1.6;
+        color: #2d3748;
+        overflow-x: hidden;
+        background: #edf4fb; /* New website background */
+    }
+
+
+        /* Navigation - Modified */
+        .navbar {
+            background: #1a365d;
+            padding: 0 1.5rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            z-index: 1001;
+        }
+
+        .logo-svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        /* Mobile Menu Styles */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .megaphone-logo {
+            fill: none;
+            stroke: #4fd1c5; /* Your brand teal color */
+        }
+
+        .megaphone-logo path:nth-child(3) { /* Document lines */
+            stroke: white !important;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 60px;
+                gap: 0;
+                flex-direction: column;
+                background: #1a365d;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .nav-links a {
+                padding: 1rem;
+                display: block;
+                width: 100%;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+
+        .nav-links li {
+            margin:0 1.5rem;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), /* Lighter overlay */
+                    url('https://cmogujarat.gov.in/sites/default/files/2024-11/cm-gujarat-swagat-session-oct-2024-grievances.JPG');
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white; /* Original text color restored */
+        padding-top: 72px; /* Push content below navbar */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+    }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Buttons */
+        .cta-buttons {
+    display: flex; /* Arrange buttons in a row */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 1.5rem; /* Add spacing between buttons */
+    margin-top: 2rem;
+}
+
+.cta-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    flex: 1; /* Allow buttons to grow equally */
+    max-width: 200px; /* Set a max-width for better appearance */
+}
+
+.citizen-btn {
+    background: #2dccbc;
+    color: #1a365d;
+}
+
+.official-btn {
+    background: #edf4fb;
+    color: #1a365d;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a365d;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4fd1c5;
+            margin-bottom: 1rem;
+        }
+
+        /* Benefits Section */
+        .benefits-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .benefit-box {
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .benefit-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            color: #1a365d;
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-section {
+            background: 
+                        url('https://img.freepik.com/premium-photo/light-blue-background-website-banner_1106493-233794.jpg');
+            background-size: cover;
+            background-position: center;
+            color: rgb(8, 55, 108);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Roadmap Section */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a365d;
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #4fd1c5;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #4fd1c5;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 64 64">
+                <g class="megaphone-logo">
+                    <path d="M52 28L32 8 12 28v24h40V28z" fill="#1a365d" stroke="#4fd1c5"/>
+                    <path d="M52 36c4 0 8-4 8-8s-4-8-8-8M52 44c7 0 12-5 12-12s-5-12-12-12" stroke="#4fd1c5"/>
+                    <path d="M16 36h12M16 42h12M16 48h12" stroke="#fff"/>
+                </g>
+            </svg>
+            <span class="logo-text">Complaint Express</span>
+        </a>
+        
+        <button class="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Empowering Citizens, Enhancing Governance</h1>
+            <p>Seamlessly connect with government officials, track complaint status, and contribute to a transparent system</p>
+            <div class="cta-buttons">
+                <form action="/citizen" method="POST">
+                <button class="cta-btn citizen-btn" type="submit">Citizen Portal</button>
+                </form>
+                <form action="/official" method="POST">
+                <button class="cta-btn official-btn" type="submit">Official Portal</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain feature-icon"></i>
+                <h3>AI-Driven Analysis</h3>
+                <p>Automatic complaint categorization to relevant departments</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>OTP Verification</h3>
+                <p>Secure access with two-factor authentication</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bell feature-icon"></i>
+                <h3>Real-time Updates</h3>
+                <p>Instant notifications at every complaint stage</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="section" id="benefits">
+        <h2 class="section-title">Benefits</h2>
+        <div class="benefits-container">
+            <div class="benefit-box">
+                <i class="fas fa-university benefit-icon"></i>
+                <h3>For Government</h3>
+                <ul>
+                    <li>✓ Enhanced operational efficiency</li>
+                    <li>✓ Data-driven decision making</li>
+                    <li>✓ Improved resource allocation</li>
+                    <li>✓ Transparent accountability</li>
+                </ul>
+            </div>
+            <div class="benefit-box">
+                <i class="fas fa-users benefit-icon"></i>
+                <h3>For Citizens</h3>
+                <ul>
+                    <li>✓ Real-time status tracking</li>
+                    <li>✓ Simple complaint registration</li>
+                    <li>✓ Expected resolution timelines</li>
+                    <li>✓ Feedback mechanism</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-content">
+            <h2>About Complaint Express</h2>
+            <p>Complaint Express is an AI-powered platform designed to bridge the gap between citizens and government officials. We streamline the complaint process, ensuring that every voice is heard and addressed by the right department. Our mission is to promote transparency, enhance accountability, and empower citizens to participate actively in governance.</p>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="section" id="roadmap">
+        <h2 class="section-title">Upcoming Features</h2>
+        <div class="roadmap-grid">
+            <div class="feature-card">
+                <i class="fas fa-lock feature-icon"></i>
+                <h3>Advanced Security</h3>
+                <p>256-bit encryption & HTTPS protocol</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-sync feature-icon"></i>
+                <h3>Live Integration</h3>
+                <p>Real-time updates across Gujarat</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <h3>AI Analytics</h3>
+                <p>Performance ranking system</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>📧 contact@complaintexpress.com</p>
+                <p>📞 +91-XXX-XXX-XXXX</p>
+                <p>🏢 123 Government Building, Gujarat</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="./faq.html">FAQ</a></li>
+                    <li><a href="./contact.html">Team</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

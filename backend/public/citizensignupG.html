@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #edf4fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            background: rgb(38, 114, 213);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links button {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .nav-links .active {
+            background:  #08066a;
+            box-shadow: 0px 4px 8px rgba(41, 128, 185, 0.6);
+        }
+
+        .nav-links button:not(.active) {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .nav-links button:hover {
+            background:  #08066a;
+            border: none;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: rgb(48, 104, 179);
+            outline: none;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background:  rgb(38, 114, 213);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .signup-btn:hover {
+            background:  #08066a;
+        }
+
+        .footer-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <form action="/citizenloginG" method="POST">
+                <button type="submit">લોગિન</button>
+            </form>
+            <button type="button" class="active">સાઇન અપ</button>
+        </ul>
+    </nav>
+
+    <div class="signup-container">
+        <h2>સાઇન અપ</h2>
+        <form action="/signup" method="POST">
+            <div class="form-group">
+                <label for="name">નામ<span style="color: red;">*</span></label>
+                <input type="text" name="name" id="name" placeholder="તમારું નામ દાખલ કરો" required>
+            </div>
+            <div class="form-group">
+                <label for="phonenumber">ફોન નંબર<span style="color: red;">*</span></label>
+                <input type="tel" name="phonenumber" id="phonenumber" placeholder="તમારો ફોન નંબર દાખલ કરો" required>
+            </div>
+            <div class="form-group">
+                <label for="email">ઈમેઇલ<span style="color: red;">*</span></label>
+                <input type="email" name="email" id="email" placeholder="તમારું ઇમેઇલ દાખલ કરો" required>
+            </div>
+            <div class="form-group">
+                <label for="taluka">તાલુકો<span style="color: red;">*</span></label>
+                <input type="text" name="taluka" id="taluka" placeholder="તમારો તાલુકો દાખલ કરો" required>
+            </div>
+            <div class="form-group">
+                <label for="district">જિલ્લો<span style="color: red;">*</span></label>
+                <input type="text" name="district" id="district" placeholder="તમારો જિલ્લા દાખલ કરો" required>
+            </div>
+            <div class="form-group">
+                <label for="place">ગામ<span style="color: red;">*</span></label>
+                <input id="place" name="place" placeholder="તમારું ગામ દાખલ કરો" type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="panchayat">પંચાયત ગામ<span style="color: red;">*</span></label>
+                <input id="panchayat" name="panchayat" placeholder="તમારું ગામ કઈ પંચાયત હેઠળ છે" type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="password">પાસવર્ડ બનાવો<span style="color: red;">*</span></label>
+                <input type="password" name="password" id="password" placeholder="પાસવર્ડ બનાવો" required>
+            </div>
+            <button type="submit" class="signup-btn">સાઇન અપ</button>
+        </form>
+        <!-- <p class="footer-text">માત્ર અધિકૃત નાગરિકો માટે</p> -->
+    </div>
+
+</body>
+</html>
