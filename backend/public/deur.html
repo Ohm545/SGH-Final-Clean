@@ -336,7 +336,7 @@ async function submitProof(mobilenum, complaintdesc, button, complaintdep, taluk
 
         const result = await response.json();
         if (response.ok) {
-            alert('Proof uploaded successfully!');
+            alert('Proof     uploaded successfully!');
             form.reset();
             form.style.display = 'none';
             fetchUnderResolutionComplaints(); // Refresh the complaints list
