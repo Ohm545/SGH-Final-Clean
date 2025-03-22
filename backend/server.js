@@ -18,23 +18,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.set("view engine", "ejs");
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 // const upload = multer({dest:'uploads/'});
-const pool = new Pool({
-        user: process.env.DB_USER,
-        // host: process.env.DB_HOST,
-        database: process.env.DB_NAME,
-        password: process.env.DB_PASS,
-        port: process.env.DB_PORT,
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-});
+// const pool = new Pool({
+//         user: process.env.DB_USER,
+//         // host: process.env.DB_HOST,
+//         database: process.env.DB_NAME,
+//         password: process.env.DB_PASS,
+//         port: process.env.DB_PORT,
+//         connectionString: process.env.DATABASE_URL,
+//         ssl: { rejectUnauthorized: false }
+// });
 // app.use(session({
 //     secret: process.env.SECERT_KEY,
 //     resave: false,
 //     saveUninitialized: true
 // }));
 // dotenv.config();
+
+const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL, // Use Neon connection string
+    ssl: { rejectUnauthorized: false }, // Required for Neon DB
+  });
 console.log("DB_USER:", process.env.DB_USER);  
 console.log("DB_PASS:", process.env.DB_PASS);
 const __filename = fileURLToPath(import.meta.url);
